@@ -11,50 +11,48 @@ const useHttp = (
   setResponse: React.Dispatch<React.SetStateAction<any>>,
   setIsLoading: React.Dispatch<React.SetStateAction<number>>
 ) => {
-  let url =
-    "https://cors-anywhere.herokuapp.com/https://opendata.dwd.de/climate_environment/health/alerts/uvi.json";
-
   useEffect(() => {
     let isActive = true;
-    // fetch(url)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     if (isActive) {
-    //       setIsLoading(1);
-    //       var responseString = JSON.stringify(data);
-    //       var responseJSON = JSON.parse(responseString);
-    //       var contentArray = responseJSON.content;
-    //       let outputArrayCities: Array<any>;
-    //       outputArrayCities = [];
 
-    //       contentArray.forEach((element: any) => {
-    //         if (element.city !== -1) {
-    //           var add = {
-    //             name: element.city,
-    //             clicked: false,
-    //           };
-    //           outputArrayCities.push(add);
-    //         }
-    //       });
-    //       if (localStorage.getItem(CITY) !== null) {
-    //         outputArrayCities.forEach((element) => {
-    //           if (element.name === localStorage.getItem(CITY)) {
-    //             element.clicked = true;
-    //           }
-    //         });
-    //       }
-    //       setCities(() => {
-    //         return outputArrayCities;
-    //       });
-    //       setResponse(() => {
-    //         return data;
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setIsLoading(2);
-    //     console.log(error.message);
-    //   });
+    fetch("/express_backend")
+      .then((response) => response.json())
+      .then((data) => {
+        if (isActive) {
+          setIsLoading(1);
+          var responseString = JSON.stringify(data);
+          var responseJSON = JSON.parse(responseString);
+          var contentArray = responseJSON.content;
+          let outputArrayCities: Array<any>;
+          outputArrayCities = [];
+
+          contentArray.forEach((element: any) => {
+            if (element.city !== -1) {
+              var add = {
+                name: element.city,
+                clicked: false,
+              };
+              outputArrayCities.push(add);
+            }
+          });
+          if (localStorage.getItem(CITY) !== null) {
+            outputArrayCities.forEach((element) => {
+              if (element.name === localStorage.getItem(CITY)) {
+                element.clicked = true;
+              }
+            });
+          }
+          setCities(() => {
+            return outputArrayCities;
+          });
+          setResponse(() => {
+            return data;
+          });
+        }
+      })
+      .catch((error) => {
+        setIsLoading(2);
+        console.log(error.message);
+      });
     if (isActive) {
       setIsLoading(1);
       var responseString = JSON.stringify(DUMMYRESPONSE);
