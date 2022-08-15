@@ -64,9 +64,9 @@ const Page: React.FC = () => {
   const [isLoading, setIsLoading] = useState(0); //0 loading, 1 success, 2 error
 
   const handleClick = (id: string) => {
-    let changeCities = JSON.parse(JSON.stringify(cities));
+    let changeCities = JSON.parse(JSON.stringify(cities)) as Array<ITypes>;
     let selected = { name: "" };
-    changeCities.forEach((element: any) => {
+    changeCities.forEach((element) => {
       element.clicked = false;
       if (element.name === id) {
         element.clicked = true;
@@ -81,54 +81,6 @@ const Page: React.FC = () => {
       return selected;
     });
   };
-
-  // let url =
-  //   "https://cors-anywhere.herokuapp.com/https://opendata.dwd.de/climate_environment/health/alerts/uvi.json";
-
-  // useEffect(() => {
-  //   let isActive = true;
-  //   fetch(url)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       if (isActive) {
-  //         setIsLoading(1);
-  //         var responseString = JSON.stringify(data);
-  //         var responseJSON = JSON.parse(responseString);
-  //         var contentArray = responseJSON.content;
-  //         let outputArrayCities = [];
-
-  //         contentArray.forEach((element) => {
-  //           if (element.city !== -1) {
-  //             var add = {
-  //               name: element.city,
-  //               clicked: false,
-  //             };
-  //             outputArrayCities.push(add);
-  //           }
-  //         });
-  //         if (localStorage.getItem(CITY) !== null) {
-  //           outputArrayCities.forEach((element) => {
-  //             if (element.name === localStorage.getItem(CITY)) {
-  //               element.clicked = true;
-  //             }
-  //           });
-  //         }
-  //         setCities(() => {
-  //           return outputArrayCities;
-  //         });
-  //         setResponse(() => {
-  //           return data;
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       setIsLoading(2);
-  //       console.log(error.message);
-  //     });
-  //   return () => {
-  //     isActive = false;
-  //   };
-  // }, []);
 
   useHttp(setCities, setResponse, setIsLoading);
   let selectionHook = useSelection(selection, response); //TODO

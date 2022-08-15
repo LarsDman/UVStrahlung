@@ -1,9 +1,18 @@
-import { CITY, DUMMYRESPONSE } from "../Constants";
+import { CITY } from "../Constants";
 import { useEffect } from "react";
 
 interface ITypes {
   name: string;
   clicked: boolean;
+}
+
+interface IResponse {
+  city: string;
+  forecast: {
+    today: number;
+    tomorrow: number;
+    dayafter_to: number;
+  };
 }
 
 const useHttp = (
@@ -21,16 +30,18 @@ const useHttp = (
           setIsLoading(1);
           var responseString = JSON.stringify(data);
           var responseJSON = JSON.parse(responseString);
-          var contentArray = responseJSON.content;
-          let outputArrayCities: Array<any>;
+          var contentArray = responseJSON.content as [IResponse];
+          let outputArrayCities: Array<ITypes>;
           outputArrayCities = [];
 
-          contentArray.forEach((element: any) => {
-            if (element.city !== -1) {
+          console.log(contentArray);
+
+          contentArray.forEach((element) => {
+            if (element.city !== "-1") {
               var add = {
                 name: element.city,
                 clicked: false,
-              };
+              } as ITypes;
               outputArrayCities.push(add);
             }
           });
@@ -53,37 +64,6 @@ const useHttp = (
         setIsLoading(2);
         console.log(error.message);
       });
-    if (isActive) {
-      setIsLoading(1);
-      var responseString = JSON.stringify(DUMMYRESPONSE);
-      var responseJSON = JSON.parse(responseString);
-      var contentArray = responseJSON.content;
-      let outputArrayCities: Array<any>;
-      outputArrayCities = [];
-
-      contentArray.forEach((element: any) => {
-        if (element.city !== -1) {
-          var add = {
-            name: element.city,
-            clicked: false,
-          };
-          outputArrayCities.push(add);
-        }
-      });
-      if (localStorage.getItem(CITY) !== null) {
-        outputArrayCities.forEach((element) => {
-          if (element.name === localStorage.getItem(CITY)) {
-            element.clicked = true;
-          }
-        });
-      }
-      setCities(() => {
-        return outputArrayCities;
-      });
-      setResponse(() => {
-        return DUMMYRESPONSE;
-      });
-    }
     return () => {
       isActive = false;
     };
