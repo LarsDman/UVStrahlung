@@ -20,6 +20,7 @@ const useHttp = (
   setResponse: React.Dispatch<React.SetStateAction<any>>,
   setIsLoading: React.Dispatch<React.SetStateAction<number>>
 ) => {
+  
   useEffect(() => {
     let isActive = true;
 
